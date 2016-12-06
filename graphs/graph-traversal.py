@@ -176,13 +176,12 @@ class Graph(object):
         node_queue = [node]
         node.visited = True
         while node_queue:
-            node = node_queue[0]
+            node = node_queue.pop(0)
             for edge in node.edges:
                 if not edge.node_to.visited:
                     node_queue.append(edge.node_to)
                     edge.node_to.visited = True
                     ret_list.append(edge.node_to.value)
-            del(node_queue[0])
         return ret_list
 
     def bfs_names(self, start_node_num):

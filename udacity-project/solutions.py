@@ -1,3 +1,5 @@
+from pprint import pprint
+
 """Question 1
 Given two strings s and t, determine whether some anagram of t is a substring 
 of s. For example: if s = "udacity" and t = "ad", then the function returns 
@@ -15,15 +17,17 @@ def question1(s, t):
 			return True
 	return False
 
+"""
 # Edge Cases
-# print question1(None, None) # Should print False
-# print question1('', '') # Should print False
-# print question1('something', '') # Should print False
-# print question1('', 'something') # Should print False
+print question1(None, None) # Should print False
+print question1('', '') # Should print False
+print question1('something', '') # Should print False
+print question1('', 'something') # Should print False
 # Test Cases
-# print question1("udacity", "ad") # Should print True
-# print question1("test", "ad") # Should print False
-# print question1("testing", "test") # Should print True
+print question1("udacity", "ad") # Should print True
+print question1("test", "ad") # Should print False
+print question1("testing", "test") # Should print True
+"""
 
 
 """Question 2
@@ -35,7 +39,7 @@ def question2(a):
 		Inputs: string
 		Outputs: string"""
 	if a == None or a == '':
-		return ''
+		return None
 	longest = ''
 	for index in range(len(a)):
 		result = question2_helper(a[index:])
@@ -55,14 +59,16 @@ def is_a_palindrome(a):
 		return True
 	return False
 
+"""
 # Edge Cases
-# print question2(None) # Prints an empty string
-# print question2('') # Prints an empty string
-# print question2("Split mirror tilpS") # Prints "ror", not "Split tilpS"
+print question2(None) # Prints "None"
+print question2('') # Prints "None"
+print question2("Split mirror tilpS") # Prints "ror", not "Split tilpS"
 # Test Cases
-# print question2("No significant palindromes") # Prints "ifi"
-# print question2("Whole string gnirts elohW") # Prints the whole string
-# print question2("A substring example elpmaxe") # Prints "example elpmaxe"
+print question2("No significant palindromes") # Prints "ifi"
+print question2("Whole string gnirts elohW") # Prints the whole string
+print question2("A substring example elpmaxe") # Prints "example elpmaxe"
+"""
 
 
 """Question 3
@@ -78,7 +84,163 @@ adjacency list structured like this:
 Vertices are represented as unique strings. 
 The function definition should be question3(G)"""
 
+class Node(object):
+	def __init__(self, value):
+		self.value = value
+		self.edges = []
+		self.visited = False
 
+class Edge(object):
+	def __init__(self, value, node_from, node_to):
+		self.value = value
+		self.node_from = node_from
+		self.node_to = node_to
+
+class Graph(object):
+	def __init__(self, nodes=None, edges=None):
+		self.nodes = nodes or []
+		self.edges = edges or []
+		self.node_names = []
+		self._node_map = {}
+
+	def insert_node(self, new_node_val):
+		"Insert a new node with value new_node_val"
+		new_node = Node(new_node_val)
+		self.nodes.append(new_node)
+		self._node_map[new_node_val] = new_node
+		return new_node
+
+	def insert_edge(self, new_edge_val, node_from_val, node_to_val):
+		"Insert a new edge, creating new nodes if necessary"
+		nodes = {node_from_val: None, node_to_val: None}
+		for node in self.nodes:
+			if node.value in nodes:
+				nodes[node.value] = node
+				if all(nodes.values()):
+					break
+		for node_val in nodes:
+			nodes[node_val] = nodes[node_val] or self.insert_node(node_val)
+		node_from = nodes[node_from_val]
+		node_to = nodes[node_to_val]
+		new_edge = Edge(new_edge_val, node_from, node_to)
+		node_from.edges.append(new_edge)
+		node_to.edges.append(new_edge)
+		self.edges.append(new_edge)
+
+	def get_adjacency_list(self):
+		self.adjacencyList = {}
+		for edge in self.edges:
+			if edge.node_from.value in self.adjacencyList:
+				self.adjacencyList[edge.node_from.value].append((
+											edge.node_to.value, edge.value))
+			else:
+				self.adjacencyList[edge.node_from.value] = [(
+											edge.node_to.value, edge.value)]
+			if edge.node_to.value in self.adjacencyList:
+				self.adjacencyList[edge.node_to.value].append((
+											edge.node_from.value, edge.value))
+			else:
+				self.adjacencyList[edge.node_to.value] = [(
+											edge.node_from.value, edge.value)]
+		return self.adjacencyList
+
+	def _clear_visited(self):
+		for node in self.nodes:
+			node.visited = False
+
+	def bfs(self, node):
+		self._clear_visited()
+		edgeList = []
+		node_queue = [node]
+		node.visited = True
+		while node_queue:
+			node = node_queue.pop(0)
+			for edge in node.edges:
+				if not edge.node_to.visited:
+					node_queue.append(edge.node_to)
+					edge.node_to.visited = True
+					edgeList.append(edge)
+				elif not edge.node_from.visited:
+					node_queue.append(edge.node_from)
+					edge.node_from.visited = True
+					edgeList.append(edge)
+		return edgeList
+
+def question3(G):
+	minimumPathCost = float("inf")
+	minimumPath = None
+	for node in G.nodes:
+		path = G.bfs(node)
+		pathCost = 0
+		for branch in path:
+			pathCost += branch.value
+		if pathCost < minimumPathCost:
+			minimumPathCost = pathCost
+			minimumPath = path
+	minimumSpanningTree = Graph()
+	for branch in minimumPath:
+		minimumSpanningTree.insert_edge(branch.value, branch.node_from.value, 
+										branch.node_to.value)
+	return minimumSpanningTree.get_adjacency_list()
+
+"""
+graph = Graph()
+graph.insert_edge(2, 'A', 'B')
+graph.insert_edge(5, 'B', 'C')
+graph.insert_edge(10, 'A', 'C')
+pprint(graph.get_adjacency_list()) # A simple case
+# Full graph:
+# {'A': [('B', 2), ('C', 10)],
+#  'B': [('A', 2), ('C', 5)], 
+#  'C': [('B', 5), ('A', 10)]}
+pprint(question3(graph))
+# Minimum spanning tree should be:
+# {'A': [('B', 2)],
+#  'B': [('A', 2), ('C', 5)], 
+#  'C': [('B', 5)]}
+
+graph2 = Graph()
+graph2.insert_edge(1, 'A', 'B')
+graph2.insert_edge(8, 'B', 'C')
+graph2.insert_edge(2, 'C', 'D')
+graph2.insert_edge(9, 'A', 'D')
+pprint(graph2.get_adjacency_list()) # An hourglass case
+# Full graph:
+# {'A': [('B', 1), ('D', 9)],
+#  'B': [('A', 1), ('C', 8)], 
+#  'C': [('B', 8), ('D', 2)], 
+#  'D': [('A', 9), ('C', 2)]}
+pprint(question3(graph2))
+# Minimum spanning tree should be:
+# {'A': [('B', 1)],
+#  'B': [('A', 1), ('C', 8)], 
+#  'C': [('B', 8), ('D', 2)], 
+#  'D': [('C', 2)]}
+
+graph3 = Graph()
+graph3.insert_edge(1, 'A', 'B')
+graph3.insert_edge(2, 'B', 'C')
+graph3.insert_edge(1, 'C', 'D')
+graph3.insert_edge(2, 'D', 'E')
+graph3.insert_edge(1, 'E', 'F')
+graph3.insert_edge(2, 'F', 'A')
+pprint(graph3.get_adjacency_list()) # An alternating circle case
+# Full graph:
+# {'A': [('B', 1), ('F', 2)],
+#  'B': [('A', 1), ('C', 2)], 
+#  'C': [('B', 2), ('D', 1)], 
+#  'D': [('C', 1), ('E', 2)], 
+#  'E': [('D', 2), ('F', 1)], 
+#  'F': [('E', 1), ('A', 2)]}
+pprint(question3(graph3))
+# Minimum spanning tree should have one of the "2" edges removed:
+# {'A': [('B', 1), ('F', 2)],
+#  'B': [('A', 1), ('C', 2)],
+#  'C': [('B', 2), ('D', 1)],
+#  'D': [('C', 1)],
+#  'E': [('F', 1)],
+#  'F': [('A', 2), ('E', 1)]}
+"""
 
 
 """Question 4
@@ -96,13 +258,13 @@ integers representing the two nodes in no particular order. For example, one
 test case might be
 
 question4([[0, 1, 0, 0, 0],
-           [0, 0, 0, 0, 0],
-           [0, 0, 0, 0, 0],
-           [1, 0, 0, 0, 1],
-           [0, 0, 0, 0, 0]],
-          3,
-          1,
-          4)
+		   [0, 0, 0, 0, 0],
+		   [0, 0, 0, 0, 0],
+		   [1, 0, 0, 0, 1],
+		   [0, 0, 0, 0, 0]],
+		  3,
+		  1,
+		  4)
 and the answer would be 3."""
 
 

@@ -36,15 +36,34 @@ def question2(a):
 		Outputs: string"""
 	if a == None or a == '':
 		return ''
-	# longest = ''
+	longest = ''
+	for index in range(len(a)):
+		result = question2_helper(a[index:])
+		if len(result) > len(longest):
+			longest = result
+	return longest
+
+def question2_helper(a):
+	result = ''
+	for length in range(len(a) + 1):
+		if is_a_palindrome(a[:length]) and length > len(result):
+			result = a[:length]
+	return result
+
+def is_a_palindrome(a):
+	if a == a[::-1]:
+		return True
+	return False
 
 # Edge Cases
-print question2(None) # Prints an empty string
-print question2('') # Prints an empty string
+# print question2(None) # Prints an empty string
+# print question2('') # Prints an empty string
+# print question2("Split mirror tilpS") # Prints "ror", not "Split tilpS"
 # Test Cases
 # print question2("No significant palindromes") # Prints "ifi"
-# print question2("The whole string gnirts elohw eht") # Prints the whole string
+# print question2("Whole string gnirts elohW") # Prints the whole string
 # print question2("A substring example elpmaxe") # Prints "example elpmaxe"
+
 
 """Question 3
 Given an undirected graph G, find the minimum spanning tree within G. 

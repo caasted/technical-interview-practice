@@ -267,7 +267,103 @@ question4([[0, 1, 0, 0, 0],
 		  4)
 and the answer would be 3."""
 
+class BST_Node(object):
+	def __init__(self, value):
+		self.value = value
+		self.left = None
+		self.right = None
 
+class BST(object):
+	def __init__(self, root):
+		self.root = BST_Node(root)
+
+	def insert(self, new_val):
+		self.insertHelper(self.root, new_val)
+
+	def search(self, value_1, value_2):
+		return self.searchHelper(self.root, value_1, value_2)
+		
+	def print_tree(self):
+		return self.preorder_print(self.root, None)
+
+	def insertHelper(self, start, new_val):
+		if new_val < start.value:
+			if start.left == None:
+				start.left = BST_Node(new_val)
+			else:
+				self.insertHelper(start.left, new_val)
+		if new_val > start.value:
+			if start.right == None:
+				start.right = BST_Node(new_val)
+			else:
+				self.insertHelper(start.right, new_val)
+	
+	def searchHelper(self, start, value_1, value_2):
+		if start:
+			traversal = str(start.value)
+			if start.value == value_1 or start.value == value_2:
+				return traversal
+			if start.value > value_1 and start.value > value_2:
+				return self.searchHelper(start.left, value_1, value_2)
+			if start.value < value_1 and start.value < value_2:
+				return self.searchHelper(start.right, value_1, value_2)
+			return traversal
+		return False
+		
+	def preorder_print(self, start, traversal):
+		if start:
+			traversal = str(start.value)
+			left = self.preorder_print(start.left, traversal)
+			right = self.preorder_print(start.right, traversal)
+			if left:
+				traversal += '-' + left
+			if right:
+				traversal += '-' + right
+			return traversal
+		return False
+
+def question4(T, r, n1, n2):
+	tree = BST(r)
+	nodes = [r]
+	while len(nodes) > 0:
+		row = T[nodes[0]]
+		for column in range(len(row)):
+			if row[column] == 1:
+				tree.insert(column)
+				nodes.append(column)
+		del(nodes[0])
+	return tree.search(n1, n2)
+
+
+print question4([[0, 1, 0, 0, 0],
+				[0, 0, 0, 0, 0],
+				[0, 0, 0, 0, 0],
+				[1, 0, 0, 0, 1],
+				[0, 0, 0, 0, 0]],
+				3,
+				1,
+				4)
+# Should print "3"
+
+print question4([[0, 1, 0, 0, 0],
+				[0, 0, 0, 0, 0],
+				[0, 0, 0, 0, 0],
+				[0, 0, 0, 0, 0],
+				[1, 0, 1, 0, 0]],
+				4,
+				1,
+				2)
+# Should print "2"
+
+print question4([[0, 0, 0, 0, 0],
+				[0, 0, 0, 1, 0],
+				[0, 0, 0, 0, 0],
+				[0, 0, 1, 0, 1],
+				[0, 0, 0, 0, 0]],
+				1,
+				2,
+				4)
+# Should print "3"
 
 
 """Question 5

@@ -18,14 +18,22 @@ def question1(s, t):
 	return False
 
 # Edge Cases
-print question1(None, None) # Should print False
-print question1('', '') # Should print False
-print question1('something', '') # Should print False
-print question1('', 'something') # Should print False
+print question1(None, None)
+# Should print False
+print question1('', '')
+# Should print False
+print question1('something', '')
+# Should print False
+print question1('', 'something')
+# Should print False
+
 # Test Cases
-print question1("udacity", "ad") # Should print True
-print question1("test", "ad") # Should print False
-print question1("testing", "test") # Should print True
+print question1("udacity", "ad")
+# Should print True
+print question1("test", "ad")
+# Should print False
+print question1("testing", "test")
+# Should print True
 
 
 """Question 2
@@ -58,13 +66,20 @@ def is_a_palindrome(a):
 	return False
 
 # Edge Cases
-print question2(None) # Prints "None"
-print question2('') # Prints "None"
-print question2("Split mirror tilpS") # Prints "ror", not "Split tilpS"
+print question2(None)
+# Prints "None"
+print question2('')
+# Prints "None"
+print question2("Split mirror tilpS")
+# Prints "ror", not "Split tilpS"
+
 # Test Cases
-print question2("No significant palindromes") # Prints "ifi"
-print question2("Whole string gnirts elohW") # Prints the whole string
-print question2("A substring example elpmaxe") # Prints "example elpmaxe"
+print question2("No significant palindromes")
+# Prints "ifi"
+print question2("Whole string gnirts elohW")
+# Prints the whole string
+print question2("A substring example elpmaxe")
+# Prints "example elpmaxe"
 
 
 """Question 3
@@ -163,27 +178,38 @@ class Graph(object):
 		return edgeList
 
 def question3(G):
-	minimumPathCost = float("inf")
-	minimumPath = None
-	for node in G.nodes:
-		path = G.bfs(node)
-		pathCost = 0
-		for branch in path:
-			pathCost += branch.value
-		if pathCost < minimumPathCost:
-			minimumPathCost = pathCost
-			minimumPath = path
-	minimumSpanningTree = Graph()
-	for branch in minimumPath:
-		minimumSpanningTree.insert_edge(branch.value, branch.node_from.value, 
-										branch.node_to.value)
-	return minimumSpanningTree.get_adjacency_list()
+	if isinstance(G, Graph) and len(G.nodes) > 0:
+		minimumPathCost = float("inf")
+		minimumPath = None
+		for node in G.nodes:
+			path = G.bfs(node)
+			pathCost = 0
+			for branch in path:
+				pathCost += branch.value
+			if pathCost < minimumPathCost:
+				minimumPathCost = pathCost
+				minimumPath = path
+		minimumSpanningTree = Graph()
+		for branch in minimumPath:
+			minimumSpanningTree.insert_edge(branch.value, branch.node_from.value, 
+											branch.node_to.value)
+		return minimumSpanningTree.get_adjacency_list()
+	return None
 
+# Edge Cases
+pprint(question3(None)) # No input case
+# Should print None
+pprint(question3(1)) # Incorrect type input case
+# Should print None
+edge = Graph()
+pprint(question3(edge)) # Emptry graph input case
+# Should print None
+
+# Test Cases
 graph = Graph()
 graph.insert_edge(2, 'A', 'B')
 graph.insert_edge(5, 'B', 'C')
 graph.insert_edge(10, 'A', 'C')
-# pprint(graph.get_adjacency_list()) # A simple case
 # Full graph:
 # {'A': [('B', 2), ('C', 10)],
 #  'B': [('A', 2), ('C', 5)], 
@@ -199,7 +225,6 @@ graph2.insert_edge(1, 'A', 'B')
 graph2.insert_edge(8, 'B', 'C')
 graph2.insert_edge(2, 'C', 'D')
 graph2.insert_edge(9, 'A', 'D')
-# pprint(graph2.get_adjacency_list()) # An hourglass case
 # Full graph:
 # {'A': [('B', 1), ('D', 9)],
 #  'B': [('A', 1), ('C', 8)], 
@@ -219,7 +244,6 @@ graph3.insert_edge(1, 'C', 'D')
 graph3.insert_edge(2, 'D', 'E')
 graph3.insert_edge(1, 'E', 'F')
 graph3.insert_edge(2, 'F', 'A')
-# pprint(graph3.get_adjacency_list()) # An alternating circle case
 # Full graph:
 # {'A': [('B', 1), ('F', 2)],
 #  'B': [('A', 1), ('C', 2)], 
@@ -317,17 +341,33 @@ class BST(object):
 		return False
 
 def question4(T, r, n1, n2):
-	tree = BST(r)
-	nodes = [r]
-	while len(nodes) > 0:
-		row = T[nodes[0]]
-		for column in range(len(row)):
-			if row[column] == 1:
-				tree.insert(column)
-				nodes.append(column)
-		del(nodes[0])
-	return tree.search(n1, n2)
+	if T and r and n1 and n2:
+		if (len(T) < r or len(T) < n1 or len(T) < n2):
+			return None
+		tree = BST(r)
+		nodes = [r]
+		while len(nodes) > 0:
+			row = T[nodes[0]]
+			for column in range(len(row)):
+				if row[column] == 1:
+					tree.insert(column)
+					nodes.append(column)
+			del(nodes[0])
+		return tree.search(n1, n2)
+	return None
 
+# Edge Cases
+print question4(None, 1, 2, 3) # Empty matrix
+# Should print None
+print question4([[0, 0, 0], 
+				[0, 0, 0], 
+				[0, 1, 0]], # Root not in matrix
+				4,
+				2,
+				1)
+# Should print None
+
+# Test Cases
 print question4([[0, 1, 0, 0, 0],
 				[0, 0, 0, 0, 0],
 				[0, 0, 0, 0, 0],

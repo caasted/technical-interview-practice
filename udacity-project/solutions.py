@@ -436,17 +436,32 @@ class LinkedList(object):
 		return stack
 
 def question5(ll, m):
-	stack = ll.getStack()
-	if m < 1 or m > len(stack):
-		return None
-	return stack[-m]
+	if ll and m:
+		if isinstance(ll, LinkedList) and ll.head:
+			stack = ll.getStack()
+			if m < 1 or m > len(stack):
+				return None
+			return stack[-m]
+	return None
 
 ll = LinkedList(LinkedListNode(1))
 for element in range(2, 7):
 	ll.append(LinkedListNode(element))
 
-print question5(ll, 0) # Should print "None"
-print question5(ll, 1) # Should print "6"
-print question5(ll, 4) # Should print "3"
-print question5(ll, 6) # Should print "1"
-print question5(ll, 7) # Should print "None"
+# Edge Cases:
+print question5(None, 4) # None case
+# Should print "None"
+print question5(LinkedList(), 4) # Empty list case
+# Should print "None"
+print question5(ll, 0) # Element less than 1
+# Should print "None"
+print question5(ll, 7) # Element greater than length of list
+# Should print "None"
+
+# Test Cases:
+print question5(ll, 1)
+# Should print "6"
+print question5(ll, 4)
+# Should print "3"
+print question5(ll, 6)
+# Should print "1"

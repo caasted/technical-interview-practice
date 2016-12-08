@@ -334,7 +334,7 @@ def question4(T, r, n1, n2):
 		del(nodes[0])
 	return tree.search(n1, n2)
 
-
+"""
 print question4([[0, 1, 0, 0, 0],
 				[0, 0, 0, 0, 0],
 				[0, 0, 0, 0, 0],
@@ -364,6 +364,7 @@ print question4([[0, 0, 0, 0, 0],
 				2,
 				4)
 # Should print "3"
+"""
 
 
 """Question 5
@@ -373,11 +374,47 @@ example, if a linked list has 5 elements, the 3rd element from the end is the
 ll is the first node of a linked list and m is the "mth number from the end". 
 You should copy/paste the Node class below to use as a representation of a 
 node in the linked list. Return the value of the node at that position.
-
-class Node(object):
+"""
+class LinkedListNode(object):
 	def __init__(self, data):
 		self.data = data
 		self.next = None
-"""
 
+class LinkedList(object):
+	def __init__(self, head=None):
+		self.head = head
+		
+	def append(self, new_element):
+		if self.head:
+			current = self.head
+			while current.next:
+				current = current.next
+			current.next = new_element
+		else:
+			self.head = new_element
+	
+	def getStack(self):
+		stack = []
+		if self.head:
+			current = self.head
+			stack.append(current.data)
+			while current.next:
+				current = current.next
+				stack.append(current.data)
+		return stack
 
+def question5(ll, m):
+	stack = ll.getStack()
+	if m < 1 or m > len(stack):
+		return None
+	return stack[-m]
+
+ll = LinkedList(LinkedListNode(1))
+for element in range(2, 7):
+	ll.append(LinkedListNode(element))
+
+print question5(ll, 0) # Should print "None"
+print question5(ll, 1) # Should print "6"
+print question5(ll, 4) # Should print "3"
+print question5(ll, 6) # Should print "1"
+print question5(ll, 7) # Should print "None"

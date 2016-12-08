@@ -318,14 +318,14 @@ class BST(object):
 	
 	def searchHelper(self, start, value_1, value_2):
 		if start:
-			traversal = str(start.value)
+			ancestor = str(start.value)
 			if start.value == value_1 or start.value == value_2:
-				return traversal
+				return ancestor
 			if start.value > value_1 and start.value > value_2:
 				return self.searchHelper(start.left, value_1, value_2)
 			if start.value < value_1 and start.value < value_2:
 				return self.searchHelper(start.right, value_1, value_2)
-			return traversal
+			return ancestor
 		return False
 		
 	def preorder_print(self, start, traversal):

@@ -291,13 +291,12 @@ def question4(T, r, n1, n2):
 		if (len(T) < r or len(T) < n1 or len(T) < n2):
 			return None
 		ancestor = r
-		row = T[ancestor]
 		left = None
 		right = None
 		while ancestor != None:
 			# Find children of current node
-			for column in range(len(row)):
-				if row[column] == 1:
+			for column in range(len(T)):
+				if T[ancestor][column] == 1:
 					if column < ancestor:
 						left = column
 					if column > ancestor:
@@ -313,7 +312,6 @@ def question4(T, r, n1, n2):
 				return ancestor
 			if ancestor < n1 and ancestor > n2:
 				return ancestor
-			row = T[ancestor]
 	return None
 
 # Edge Cases

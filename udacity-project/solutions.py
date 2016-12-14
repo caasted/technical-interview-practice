@@ -7,12 +7,10 @@ True. Your function definition should look like: question1(s, t) and return
 a boolean True or False."""
 
 def question1(s, t):
-	""" Determines if string2 is a substring of string1 (forwards or backwards)
+	""" Determines if string2 is a reverse substring of string1
 		Inputs: string1, string2
 		Ouput: Boolean"""
 	if s and t:
-		if t in s:
-			return True
 		if t[::-1] in s:
 			return True
 	return False
@@ -32,8 +30,10 @@ print question1("udacity", "ad")
 # Should print True
 print question1("test", "ad")
 # Should print False
-print question1("testing", "test")
+print question1("testing", "its")
 # Should print True
+print question1("testing", "test")
+# Should print False
 
 
 """Question 2

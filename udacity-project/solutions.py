@@ -383,7 +383,9 @@ class LinkedList(object):
 		else:
 			self.head = new_element
 	
-	def getStack(self):
+	def getNBack(self, n):
+		if n < 1:
+			return None
 		stack = []
 		if self.head:
 			current = self.head
@@ -391,15 +393,14 @@ class LinkedList(object):
 			while current.next:
 				current = current.next
 				stack.append(current.data)
-		return stack
+				if len(stack) > n:
+					del(stack[0])
+		return stack[0]
 
 def question5(ll, m):
 	if ll and m:
 		if isinstance(ll, LinkedList) and ll.head:
-			stack = ll.getStack()
-			if m < 1 or m > len(stack):
-				return None
-			return stack[-m]
+			return ll.getNBack(m)
 	return None
 
 ll = LinkedList(LinkedListNode(1))

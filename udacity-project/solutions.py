@@ -14,7 +14,7 @@ def question1(s, t):
 		anagram = []
 		for letter in t:
 			anagram.append(letter) # Create an array from t
-		anagramTest = anagram # Keep the original array for resets
+		anagramTest = anagram[:] # Keep the original array for resets
 		for letter in s:
 			for character in range(len(anagramTest)):
 				if letter == anagramTest[character]:
@@ -44,6 +44,8 @@ print question1("testing", "its")
 # Should print True
 print question1("testing", "set")
 # Should print True
+print question1("udacity", "uy")
+# Should print False
 
 
 """Question 2

@@ -2,7 +2,7 @@ Explanations to accompany solutions.py for Udacity technical interviewing
 practice project.
 
 Question 1:
-A data structure (other than strings) was not used for this solution.
+An array was used for this solution.
 The time efficiency of this solution is O(t + st) ~= O(st), where s and t 
 are the length of the input strings s and t.
 The space efficiency of this solution is O(s + 2t) ~= O(s+t)

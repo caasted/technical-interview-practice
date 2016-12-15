@@ -7,12 +7,22 @@ True. Your function definition should look like: question1(s, t) and return
 a boolean True or False."""
 
 def question1(s, t):
-	""" Determines if string2 is a reverse substring of string1
+	""" Determines if string2 is an anagram of a substring of string1
 		Inputs: string1, string2
 		Ouput: Boolean"""
 	if s and t:
-		if t[::-1] in s:
-			return True
+		anagram = []
+		for letter in t:
+			anagram.append(letter) # Create an array from t
+		anagramTest = anagram # Keep the original array for resets
+		for letter in s:
+			for character in range(len(anagramTest)):
+				if letter == anagramTest[character]:
+					del(anagramTest[character]) # Remove character from anagram
+					break
+				anagramTest = anagram # Reset anagramTest on fail
+			if len(anagramTest) < 1: # All anagram letters appear in s in order
+				return True
 	return False
 
 # Edge Cases
@@ -32,8 +42,8 @@ print question1("test", "ad")
 # Should print False
 print question1("testing", "its")
 # Should print True
-print question1("testing", "test")
-# Should print False
+print question1("testing", "set")
+# Should print True
 
 
 """Question 2

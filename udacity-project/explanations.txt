@@ -1,0 +1,42 @@
+Explanations to accompany solutions.py for Udacity technical interviewing 
+practice project.
+
+Question 1:
+A data structure (other than strings) was not used for this solution.
+The time efficiency of this solution is O(t + st) ~= O(st), where s and t 
+are the length of the input strings s and t.
+The space efficiency of this solution is O(s + 2t) ~= O(s+t)
+
+Question 2:
+A data structure (other than strings) was not used for this solution.
+The time efficiency of this solution is O(a^2), where a is the length of the 
+input string a.
+The space efficiency of this solution is O(5a) ~= O(a).
+
+Question 3:
+An undirected graph is used for this solution since it was specified as the 
+input in the problem statement. It allowed for a breadth-first-search to be 
+used to traverse the undirected graph and return the branches for calculating 
+the total edge cost for each route.
+The time efficiency of this solution is O(n * (2n + e) + n + e) = 
+O(2n^2+ne+n+e) ~= O(n^2+ne+n+e), where n is the number of nodes and e is the 
+number of edges in the input graph.
+The space efficiency of this solution is O(3n + 2e) ~= O(n+e).
+
+Question 4:
+A binary search tree process is used for this solution since it was specified 
+in the problem statement, but a data structure is not utilized.
+Since the matrices can be converted back into a binary search tree, that 
+method of search is used.
+The time efficiency of this solution is O(n) for an unbalanced tree and 
+O(log(n)) for a balanced tree, where n is the number of nodes.
+The space efficiency of this solution is O(1) since it traverses the matrix 
+passed in as a parameter in place.
+
+Question 5:
+A linked list is used for this solution since it was specified as an input 
+argument in the problem statement.
+The time efficiency of this solution is O(2n) ~= O(n), where n is the number 
+of nodes in the linked list.
+The space efficiency of this solution is O(1) because it is independent of 
+the input parameters.

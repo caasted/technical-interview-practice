@@ -41,10 +41,15 @@ def softmax(x):
 		return None
 
 
+# Or using numpy more effectively:
+def softmax2(x):
+	return numpy.exp(x) / numpy.sum(numpy.exp(x), axis=0)
+
+
 scores = [1.0, 2.0, 3.0]
 
-print softmax(scores), "\n"
+print softmax2(scores), "\n"
 
 scores = [[1, 2, 3, 6], [2, 4, 5, 6], [3, 8, 7, 6]]
 
-print softmax(scores)
+print softmax2(scores)
